@@ -4,7 +4,9 @@ Lua bindings for uinput on Linux.
 
 ## Install
 
-luarocks install uinput
+```bash
+$ luarocks install https://raw.githubusercontent.com/leafo/lua-uinput/master/uinput-dev-1.rockspec
+```
 
 ## Example
 
