@@ -1,5 +1,5 @@
 
-file = io.popen "amidi -d -p hw:4,0,0", "r"
+file = io.popen "amidi -d -p hw:2,0,0", "r"
 hex = "([%a%d][%a%d])"
 patt = "#{hex} #{hex} #{hex}$"
 
@@ -96,8 +96,15 @@ while true
 
   event = tonumber a, 16
   key = tonumber b, 16
+  velocity = tonumber c, 16
 
   switch event
+    when 176 -- foot pedal
+      if velocity == 0
+        keyboard\press uinput.KEY_LEFTSHIFT
+      else
+        keyboard\release uinput.KEY_LEFTSHIFT
+
     when 144 -- down
       continue if is_down[key]
       is_down[key] = true
