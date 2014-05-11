@@ -165,7 +165,7 @@ static int create_keyboard(lua_State *l) {
   ioctl(fd, UI_SET_EVBIT, EV_KEY);
   ioctl(fd, UI_SET_EVBIT, EV_SYN);
 
-	int i = 0;
+  int i = 0;
   while (true) {
     struct KeyTuple tuple = key_names[i++];
 
@@ -173,7 +173,7 @@ static int create_keyboard(lua_State *l) {
       break;
     }
 
-		ioctl(fd, UI_SET_KEYBIT, tuple.code);
+    ioctl(fd, UI_SET_KEYBIT, tuple.code);
   }
 
   ioctl(fd, UI_SET_KEYBIT, KEY_LEFTSHIFT);
@@ -200,30 +200,30 @@ static int create_keyboard(lua_State *l) {
 }
 
 int send_key(int fd, int code, int value) {
-	struct input_event ev;
-	memset(&ev, 0, sizeof(ev));
+  struct input_event ev;
+  memset(&ev, 0, sizeof(ev));
 
-	ev.type = EV_KEY;
-	ev.code = code;
-	ev.value = value;
-	write(fd, &ev, sizeof(ev));
+  ev.type = EV_KEY;
+  ev.code = code;
+  ev.value = value;
+  write(fd, &ev, sizeof(ev));
 
-	ev.type = EV_SYN;
-	ev.code = 0;
-	ev.value = 0;
-	write(fd, &ev, sizeof(ev));
+  ev.type = EV_SYN;
+  ev.code = 0;
+  ev.value = 0;
+  write(fd, &ev, sizeof(ev));
 }
 
 static int keyboard_press(lua_State* l) {
   Keyboard* keyboard = check_keyboard(l, 1);
-	int key = luaL_checkint(l, 2);
+  int key = luaL_checkint(l, 2);
   send_key(keyboard->fd, key, 1);
   return 0;
 }
 
 static int keyboard_release(lua_State *l) {
   Keyboard* keyboard = check_keyboard(l, 1);
-	int key = luaL_checkint(l, 2);
+  int key = luaL_checkint(l, 2);
   send_key(keyboard->fd, key, 0);
   return 0;
 }
