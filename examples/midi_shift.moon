@@ -2,32 +2,23 @@
 
 file = io.popen "amidi -d -p hw:2,0,0", "r"
 
+hex = "([%a%d][%a%d])"
+patt = "#{hex} #{hex} #{hex}$"
+
 down = false
 
 uinput = require "uinput"
 keyboard = uinput.create_keyboard!
 
 read_event = (file) ->
-  event = {}
-  curr = ""
+  buff = ""
   while true
-    char = file\read 1
-    continue if char\match "%s"
-
-    curr ..= char
-    if #curr == 2
-      table.insert event, curr
-      if #event == 3
-        break
-      else
-        curr = ""
-
-  unpack event
+    buff ..= file\read 1
+    a,b,c = buff\match patt
+    return a,b,c if a
 
 while true
   a,b,c = read_event file
-
-  continue unless a
   switch a
     when "B0"
       if c == "00"
