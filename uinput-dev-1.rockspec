@@ -15,6 +15,10 @@ dependencies = {
   "lua >= 5.1"
 }
 
+supported_platforms = {
+  "linux"
+}
+
 build = {
   type = "builtin",
   modules = {
